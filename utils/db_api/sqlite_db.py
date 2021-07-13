@@ -31,12 +31,12 @@ def add_user_to_bd(user_data):
     user_query = '''INSERT into users values(?,?,?)'''
     categories_query = '''INSERT into categories(category) values(?)'''
     tasks_query = '''INSERT INTO tasks (task, category_id) VALUES (?, ?)'''
-    with connection:
+    '''with connection:
         connection.execute(user_query, user_data)
         for category in categories:
             connection.execute(categories_query, (category,))
         for task in tasks:
-            connection.execute(tasks_query, (task, randint(1, 6)))
+            connection.execute(tasks_query, (task, randint(1, 6)))'''
 
 
 def is_executor():
@@ -61,4 +61,5 @@ def get_task(category):
     return tasks.fetchall()
 
 '''if __name__=='__main__':
-    print(get_task('INVENTORY'))'''
+    for i in ('Shar', 'Idsk', 'add_user_to_bd', 'usb', 'Clock', 'INVENTORY'):
+        print(get_task(i))'''

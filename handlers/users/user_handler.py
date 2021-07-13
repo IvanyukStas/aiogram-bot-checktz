@@ -5,6 +5,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
 from keyboards.inline.category_keyboard import categories_kb
+from keyboards.inline.user_keyboard import acept_keyboard
 from loader import dp
 from states.user_state import UserState
 from utils.db_api.sqlite_db import add_user_to_bd, get_task
@@ -32,6 +33,20 @@ async def registration(message: types.Message):
 async def check_task_for_category(call: types.CallbackQuery):
     print('Работает', call.data[4:])
     logging.info(f'Получили колбек')
-    await call.answer('Работает')
     data = get_task(call.data[4:])
-    await call.message.answer(f'{data}')
+    message = ''
+    for d in data:
+        message += d[1] + ' '
+    await call.message.answer(f'{message}', reply_markup=acept_keyboard)
+    await call.message.edit_reply_markup()
+
+@dp.callback_query_handler(text_contains='acept', state=UserState.executor)
+async def acept_task(call: types.CallbackQuery):
+    await call.message.answer(f' rere tgnf')
+    await call.message.edit_reply_markup()
+
+
+@dp.callback_query_handler(text='cancel', state=UserState.executor)
+async def acept_task(call: types.CallbackQuery):
+    await call.message.answer('Выберите категорию:',reply_markup=categories_kb)
+    await call.message.edit_reply_markup()
